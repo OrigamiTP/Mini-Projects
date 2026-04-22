@@ -1,0 +1,173 @@
+* {
+    /*Utilizando o "box-sizing: border-box" para q as configurações do padding e margin não afetem a altura e largura dos elementos*/
+    box-sizing: border-box;
+    /*
+    Foi definido margin e padding como 0(zero), mas quais elementos está sendo alterados dentro do body, se o objetivo da linha anterior era que os 
+    elementos dentro do body todo não fossem afetados pelo margin e padding?
+    
+    Resp:. O q é afetado pela linha anterior eram as caixas, mas não o background. O margin e padding neste caso são utilizados para
+    definir os limites do tamanho do background, sem eles o gradiente iria continuar a se repetir(por mais q seja só um pedaço).
+
+    Por que o gradiente se repete, e ainda só um pouco?
+
+    resp:. Por conta das alterações feitas no body, definindo a altura e a largura. Assim, o margin e padding estão auxiliando na limitação 
+    do tamanho do body, para q quando o degradê completar-se uma vez, ele não se repita e aumente o tamanho da página web.
+    */
+    margin: 0;
+    padding: 0;
+   
+}
+
+body{
+    /*Define o tamanho da página web*/
+    height: 100vh;
+    width: 100vw;
+    /*Define de forma geral o plano de fundo. Neste caso definindo a direção do degradê(90deg), sendo horinzontal e as cores do degradê(rgba())*/
+    background: linear-gradient(90deg, rgba(65, 185, 131, 1) 0%, rgba(0, 212, 255, 1) 100%);
+}
+
+.board{
+    /*define o formato da caixa/elemento. Nesse caso, no formato de grade*/
+    display: grid;
+    /*Define a largura do elemento*/
+    width: 100%;
+    /*Define a altura do elemento*/
+    height: 100%;
+    /*Definindo o formato do elemento... novamente? e para grade mais uma vez?*/
+    display: grid;
+    /*Coloca o tabuleiro inteiro no centro, conectado e alinhado corretamente na horizontal*/
+    justify-content: center;
+    /*Coloca o tabuleiro inteiro no centro, conectado e alinhado corretamente na vertical*/
+    align-content: center;
+    /*Por enquanto isso não faz nada*/
+    justify-items: center;
+    /*Também não faz nada, por enquanto*/
+    align-items: center;
+    /*
+    Coloca em formato de grade e defini a quantidade, neste caso "3" e o tamanho de cada célula, neste caso definido pelo style da classe "cell".
+    */
+    grid-template-columns: repeat(3, auto);
+}
+.board.x .cell:not(.circle):not(.x):hover::after,
+.board.x .cell:not(.circle):not(.x):hover:before,
+.board.circle .cell:not(.circle):not(.x):hover::after,
+.board.circle .cell:not(.circle):not(.x):hover::before {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.cell{
+    /*define a largura da célula*/
+    width: 100px;
+    /*Define a altura da célula*/
+    height: 100px;
+    /*Define a borda de forma geral. Neste caso, definindo a grossura da borda, o "desenho" da borda e a cor também*/
+    border: 2px solid white;
+    /*Mudou nada!*/
+    display: flex;
+    /*Mudou nada!*/
+    justify-content: center;
+    /*Mudou nada!*/
+    align-items: center;
+
+    position: relative;
+}
+
+.cell.x,
+.cell.circle {
+    cursor: not-allowed ;
+}
+
+.cell:nth-child(1), 
+.cell:nth-child(2), 
+.cell:nth-child(3) {
+    /*Retirar a borda externa do topo do grid*/
+    border-top: none;
+}
+.cell:nth-child(1), 
+.cell:nth-child(4),
+.cell:nth-child(7) {
+    /*Retirar a borda externa da lateral esquerda do grid*/
+    border-left: none;
+}
+.cell:nth-child(3),
+.cell:nth-child(6),
+.cell:nth-child(9) {
+    /*Retirar a borda externa da lateral direita do grid*/
+    border-right: none;
+}
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9) {
+    /*Retirar a borda externa da base do grid*/
+    border-bottom: none;
+}
+
+/*Cross*/
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.circle):not(.x):hover::after,
+.board.x .cell:not(.circle):not(.x):hover::before {
+    content: "";
+    height: calc(100px * 0.15);
+    width: calc(100px * 0.9);
+    background: white;
+    position: absolute;
+}
+.cell.x::before,
+.board.x .cell:hover::before {
+    transform: rotate(45deg);
+}
+.cell.x::after,
+.board.x .cell:hover::after {
+    transform: rotate(-45deg);
+}
+
+/*Circle*/
+.cell.circle::before,
+.cell.circle::after,
+.board.circle .cell:not(.circle):not(.x):hover::after,
+.board.circle .cell:not(.circle):not(.x):hover::after {
+    content: "";
+    height: calc(100px * 0.9);
+    width: calc(100px * 0.9);
+    background: white;
+    position: absolute;
+    border-radius: 50%;
+}
+
+/*Winning Message*/
+.win-msg{
+    display: none;
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    flex-direction: column;
+}
+.win-msg-btn {
+    font-size: 2.5rem;
+    background-color: rgba(65, 185, 131, 1);
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    margin-top: 16px;
+    color: white;
+}
+.win-msg-btn:hover {
+    color: rgba(65, 185, 131, 1);
+    background-color: white;
+}
+.win-msg-txt {
+    color: white;
+    font-size: 5rem;
+
+}
+
+.show-win-msg {
+    display: flex;
+}
